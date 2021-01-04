@@ -1,7 +1,17 @@
-/**
- * Implement Gatsby's Node APIs in this file.
- *
- * See: https://www.gatsbyjs.com/docs/node-apis/
- */
+// const get access to the gatsby file system
+const { createFilePath } = require(`gatsby-source-filesystem`);
 
-// You can delete this file if you're not using it
+exports.onCreateNode = ({ node, getNode, actions }) => {
+    const { createNodeField } = actions
+
+    if(node.internal.type === `MarkdownRemark`) {
+        // slug is the link for the node used in the browser for routing
+        const slug = createFilePath({ node, getNode })
+
+        createNodeField({
+            node,
+            name: `slug`,
+            value: slug
+        })
+    }
+}
